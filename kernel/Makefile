@@ -6,7 +6,7 @@ $(info -- KDIR: $(KDIR))
 $(info -- MDIR: $(MDIR))
 endif
 
-.PHONY: all compdb clean format
+.PHONY: all compdb clean format check-format
 
 all:
 	make -C $(KDIR) M=$(MDIR) modules
@@ -15,6 +15,8 @@ compdb:
 clean:
 	make -C $(KDIR) M=$(MDIR) clean
 format:
-	find . -name "*.c" -o -name "*.h" -print0 | xargs -0 clang-format -i
+	find . \( -name "*.c" -o -name "*.h" \) -print0 | xargs -0 clang-format -i
+check-format:
+	find . \( -name "*.c" -o -name "*.h" \) -print0 | xargs -0 clang-format --dry-run --Werror
 
 # Keep a new line here!! Because someone may append config
